@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--    <settings>-->
+    <!--        <setting name="lazyLoadingEnabled" value="false"/>-->
+    <!--        <setting name="aggressiveLazyLoading" value="true"/>-->
+    <!--        <setting name="cacheEnabled" value="true"/>-->
+    <!--        <setting name="mapUnderscoreToCamelCase" value="true"/>-->
+    <!--    </settings>-->
+
+    <typeAliases>
+        <typeAlias alias="Task" type="org.example.entity.Task"/>
+        <typeAlias alias="Employee" type="org.example.entity.Employee"/>
+        <typeAlias alias="ModelCar" type="org.example.entity.ModelCar"/>
+        <typeAlias alias="BrandCar" type="org.example.entity.BrandCar"/>
+        <typeAlias alias="House" type="org.example.entity.House"/>
+        <typeAlias alias="Street" type="org.example.entity.Street"/>
+        <typeAlias alias="Kitty" type="org.example.entity.Kitty"/>
+        <typeAlias alias="Master" type="org.example.entity.Master"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/tt"/>
+                <property name="username" value="root"/>
+                <property name="password" value="den27lad27"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="mappers/MasterMapper.xml"/>
+        <mapper resource="mappers/KittyMapper.xml"/>
+        <mapper resource="mappers/HouseMapper.xml"/>
+        <mapper resource="mappers/StreetMapper.xml"/>
+        <mapper resource="mappers/EmployeeMapper.xml"/>
+        <mapper resource="mappers/TaskMapper.xml"/>
+        <mapper resource="mappers/BrandMapper.xml"/>
+        <mapper resource="mappers/ModelMapper.xml"/>
+        <mapper resource="mappers/UtilsMapper.xml"/>
+    </mappers>
+
+</configuration>

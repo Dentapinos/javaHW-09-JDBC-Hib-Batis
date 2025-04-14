@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mappers.HouseMapper">
+
+    <resultMap id="houseResultMap" type="House">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="dateBuilding" column="date_building" javaType="java.time.LocalDate" jdbcType="DATE"/>
+        <result property="numberStoreys" column="floors"/>
+        <result property="type" column="type"/>
+        <association property="street" javaType="Street" column="street_id"
+                     select="org.example.mappers.StreetMapper.getById" fetchType="lazy"/>
+    </resultMap>
+
+    <select id="getById" resultMap="houseResultMap" parameterType="long">
+        SELECT id, name, date_building, floors, type, street_id
+        FROM houses
+        WHERE id = #{id}
+    </select>
+
+    <insert id="save" parameterType="House" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO houses (name, date_building, floors, type, street_id)
+        VALUES (#{name}, #{dateBuilding}, #{numberStoreys}, #{type}, #{street.id})
+    </insert>
+
+
+    <update id="update" parameterType="House">
+        UPDATE houses
+        SET name          = #{name},
+            date_building = #{dateBuilding},
+            floors        = #{numberStoreys},
+            type          = #{type}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getAll" resultType="House">
+        SELECT *
+        FROM houses;
+    </select>
+
+    <select id="getStreetByHouseId" resultType="Street">
+        SELECT s.id, s.name, s.postcode
+        FROM streets s
+                 JOIN houses h ON s.id = street_id
+        WHERE h.id = #{id}
+    </select>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE
+        FROM houses
+        WHERE id = #{id_house}
+    </delete>
+
+    <delete id="deleteByEntity" parameterType="House">
+        DELETE
+        FROM houses
+        WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE
+        FROM houses
+    </delete>
+</mapper>

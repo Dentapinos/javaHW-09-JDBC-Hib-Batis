@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mappers.UtilsMapper">
+
+    <sql id="resetAutoIncrement">
+        ALTER TABLE ${tableName}
+            AUTO_INCREMENT = 1;
+    </sql>
+
+    <sql id="clearTable">
+        DELETE
+        FROM ${tableName}
+    </sql>
+
+    <update id="resetTableAutoIncrement">
+        <include refid="resetAutoIncrement"/>
+    </update>
+
+    <update id="clearTableByName">
+        <include refid="clearTable"/>
+    </update>
+
+</mapper>

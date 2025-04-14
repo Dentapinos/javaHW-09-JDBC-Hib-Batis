@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mappers.StreetMapper">
+
+    <resultMap id="streetResultMap" type="Street">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="postcode" column="postcode"/>
+        <collection property="houses" ofType="House">
+            <id property="id" column="house_id"/>
+            <result property="numberStoreys" column="house_floors"/>
+            <result property="name" column="house_name"/>
+            <result property="dateBuilding" column="house_date" javaType="java.time.LocalDate" jdbcType="DATE"/>
+            <result property="type" column="house_type"/>
+        </collection>
+    </resultMap>
+
+    <select id="getById" resultMap="streetResultMap">
+        SELECT s.id,
+               s.name,
+               s.postcode,
+               h.id            as house_id,
+               h.floors        as house_floors,
+               h.name          as house_name,
+               h.date_building as house_date,
+               h.type          as house_type
+        FROM streets s
+                 LEFT JOIN houses h ON s.id = h.street_id
+        WHERE s.id = #{id}
+    </select>
+
+    <insert id="save" parameterType="Street" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO streets (name, postcode)
+        VALUES (#{name}, #{postcode})
+    </insert>
+
+    <insert id="saveHouseList" parameterType="House" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO houses (name, date_building, floors, type, street_id)
+        VALUES (#{name}, #{dateBuilding}, #{numberStoreys}, #{type}, #{street.id})
+        ON DUPLICATE KEY UPDATE name          = VALUES(name),
+                                date_building = VALUES(date_building),
+                                floors        = VALUES(floors),
+                                type          = VALUES(type);
+    </insert>
+
+    <update id="update">
+        UPDATE streets
+        SET name     = #{name},
+            postcode = #{postcode}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getAll" resultMap="streetResultMap">
+        SELECT s.id,
+               s.name,
+               s.postcode,
+               h.id            as house_id,
+               h.floors        as house_number,
+               h.name          as house_name,
+               h.date_building as house_date,
+               h.type          as house_type
+        FROM streets s
+                 LEFT JOIN houses h ON s.id = h.street_id
+    </select>
+
+    <select id="getHousesByStreetId" resultType="House" parameterType="long">
+        SELECT h.id, h.name, h.date_building, h.floors, h.type
+        FROM houses h
+                 LEFT JOIN streets s ON street_id = s.id
+        WHERE s.id = #{hid}
+        LIMIT 5
+    </select>
+
+    <sql id="refDeleteHouses">
+        DELETE
+        FROM houses
+        WHERE street_id = #{id};
+    </sql>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE
+        FROM streets
+        WHERE id = #{streetId};
+    </delete>
+
+    <delete id="deleteHousesByStreetId" parameterType="long">
+        <include refid="refDeleteHouses"/>
+    </delete>
+
+    <delete id="deleteByEntity" parameterType="Street">
+        DELETE
+        FROM streets
+        WHERE id = #{id};
+    </delete>
+
+
+    <delete id="deleteAll">
+        DELETE
+        FROM streets
+    </delete>
+
+    <delete id="deleteAllHouses">
+        DELETE
+        FROM houses
+    </delete>
+
+    <!-- Запрос для обновления автоинкремента -->
+    <update id="resetAutoIncrement">
+        ALTER TABLE streets
+            AUTO_INCREMENT = 1
+    </update>
+
+
+</mapper>

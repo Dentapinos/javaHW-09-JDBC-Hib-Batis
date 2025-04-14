@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mappers.EmployeeMapper">
+
+    <resultMap id="employeeResultMap" type="Employee">
+        <id property="id" column="em_id"/>
+        <result property="name" column="em_name"/>
+        <result property="birthDate" column="em_date" javaType="java.time.LocalDate" jdbcType="DATE"/>
+        <association property="task" javaType="Task" column="java.time.LocalDate">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+            <result property="deadline" column="deadline"/>
+            <result property="description" column="description"/>
+            <result property="type" column="type"/>
+        </association>
+    </resultMap>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO employees (name, birth_date)
+        VALUES (#{name}, #{birthDate})
+    </insert>
+
+    <select id="getById" resultMap="employeeResultMap" parameterType="long">
+        SELECT t.*, e.id as em_id, e.name as em_name, e.birth_date as em_date
+        FROM employees e
+                 LEFT JOIN tasks t ON t.employee_id = e.id
+        WHERE e.id = #{id}
+    </select>
+
+    <update id="update" parameterType="Employee">
+        UPDATE employees
+        SET name       = #{name},
+            birth_date = #{birthDate}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getAll" parameterType="Employee" resultMap="employeeResultMap">
+        SELECT t.*, e.id as em_id, e.name as em_name, e.birth_date as em_date
+        FROM employees e
+                 LEFT JOIN tasks t ON t.employee_id = e.id
+    </select>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE
+        FROM employees
+        WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE
+        FROM employees
+    </delete>
+
+    <select id="getTaskByEmployeeId" resultMap="org.example.mappers.TaskMapper.taskResultMap" parameterType="long">
+        SELECT t.*, e.id as em_id, e.name as em_name, e.birth_date as em_date
+        FROM employees e
+                 LEFT JOIN tasks t ON t.employee_id = e.id
+        WHERE e.id = #{id}
+    </select>
+
+    <update id="deleteAllRelation">
+        UPDATE tasks
+        SET employee_id = null
+    </update>
+
+</mapper>

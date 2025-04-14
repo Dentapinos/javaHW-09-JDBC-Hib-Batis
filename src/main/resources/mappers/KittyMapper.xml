@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.mappers.KittyMapper">
+
+    <resultMap id="result" type="Kitty">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="birthday" column="birthday" javaType="java.time.LocalDate" jdbcType="DATE"/>
+        <result property="breed" column="breed"/>
+        <result property="color" column="color"/>
+        <collection property="masters" ofType="Master" javaType="Master">
+            <id property="id" column="master_id"/>
+            <result property="name" column="master_name"/>
+            <result property="birthday" column="master_birthday" javaType="java.time.LocalDate" jdbcType="DATE"/>
+        </collection>
+    </resultMap>
+
+    <insert id="save" parameterType="Kitty" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO kitties (name, birthday, breed, color)
+        VALUES (#{name}, #{birthday}, #{breed}, #{color})
+    </insert>
+
+    <update id="update" parameterType="Kitty">
+        UPDATE kitties
+        SET name     = #{name},
+            birthday = #{birthday},
+            breed    = #{breed},
+            color    = #{color}
+        WHERE id = #{id};
+    </update>
+
+    <select id="getById" resultMap="result" parameterType="long">
+        SELECT m.id       AS master_id,
+               m.name     AS master_name,
+               m.birthday AS master_birthday,
+               k.id,
+               k.name,
+               k.birthday,
+               k.breed,
+               k.color
+        FROM kitties k
+                 LEFT JOIN master_kitty mk ON k.id = mk.kitty_id
+                 LEFT JOIN masters m ON mk.master_id = m.id
+        WHERE k.id = #{id};
+    </select>
+
+    <select id="getAll" resultMap="result">
+        SELECT m.id       AS master_id,
+               m.name     AS master_name,
+               m.birthday AS master_birthday,
+               k.id,
+               k.name,
+               k.birthday,
+               k.breed,
+               k.color
+        FROM kitties k
+                 LEFT JOIN master_kitty mk ON k.id = mk.kitty_id
+                 LEFT JOIN masters m ON mk.master_id = m.id
+    </select>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE
+        FROM kitties
+        WHERE id = #{id};
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE
+        FROM kitties;
+    </delete>
+
+    <delete id="deleteByEntity" parameterType="Kitty">
+        DELETE
+        FROM kitties
+        WHERE id = #{id};
+    </delete>
+
+    <delete id="deleteRelationByKittyId" parameterType="long">
+        DELETE
+        FROM master_kitty
+        WHERE kitty_id = #{k_id}
+    </delete>
+
+    <insert id="saveMasterKittyRelation">
+        INSERT INTO master_kitty (master_id, kitty_id)
+        VALUES (#{m_id}, #{k_id})
+    </insert>
+
+    <select id="getMastersByKittyId" parameterType="long" resultType="Master">
+        SELECT m.id, m.name, m.birthday
+        FROM masters m
+                 JOIN master_kitty mk ON m.id = mk.master_id
+        WHERE mk.kitty_id = #{kittyId}
+        LIMIT 5
+    </select>
+
+    <delete id="deleteAllRelation">
+        DELETE
+        FROM master_kitty;
+    </delete>
+</mapper>
