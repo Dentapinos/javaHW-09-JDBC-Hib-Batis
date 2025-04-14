@@ -1,34 +1,30 @@
-package service;
+package org.example.service;
 
-import org.example.configs.SessionManager;
 import org.example.entity.Employee;
 import org.example.entity.Task;
-import org.example.enums.SessionName;
 import org.example.enums.TypeTask;
 import org.example.exception.EntityDeleteException;
 import org.example.exception.EntityNotFoundException;
 import org.example.exception.EntitySaveException;
-import org.example.repository.jdbc.JdbcTaskRepository;
-import org.example.service.TaskService;
-import org.example.utils.CreateDropTablesUtil;
+import org.example.repository.hibernate.HibernateTaskRepository;
 import org.example.utils.EntityCreatorUtil;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("JDBC: Тестирование сервиса Task")
-class JdbcTaskServiceTest {
+@DisplayName("HIBERNATE: Тестирование сервиса Task")
+class HibernateTaskServiceTest {
 
     List<Task> tasks;
     List<Employee> employees;
 
     static TaskService service;
-    private static Connection connection;
 
     @BeforeEach
     void setUp() {
@@ -38,18 +34,8 @@ class JdbcTaskServiceTest {
 
     @BeforeAll
     static void setUpAll() {
-        JdbcTaskRepository taskRepository = new JdbcTaskRepository();
+        HibernateTaskRepository taskRepository = new HibernateTaskRepository();
         service = new TaskService(taskRepository);
-        connection = (Connection) SessionManager.createSession(SessionName.JDBC.getSessionName());
-        CreateDropTablesUtil.createAllTables(connection);
-    }
-
-    @AfterAll
-    static void tearDownAll() throws SQLException {
-        if (connection != null) {
-            CreateDropTablesUtil.dropAllTables(connection);
-            connection.close();
-        }
     }
 
     @Test

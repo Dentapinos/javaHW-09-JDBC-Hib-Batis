@@ -1,4 +1,4 @@
-package service;
+package org.example.service;
 
 import org.example.entity.BrandCar;
 import org.example.entity.ModelCar;
@@ -7,7 +7,6 @@ import org.example.exception.EntityDeleteException;
 import org.example.exception.EntityNotFoundException;
 import org.example.exception.EntitySaveException;
 import org.example.repository.hibernate.HibernateBrandRepository;
-import org.example.service.BrandCarService;
 import org.example.utils.EntityCreatorUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

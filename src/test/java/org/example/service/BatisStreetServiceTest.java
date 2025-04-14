@@ -1,4 +1,4 @@
-package service;
+package org.example.service;
 
 import org.example.entity.House;
 import org.example.entity.Street;
@@ -6,7 +6,6 @@ import org.example.exception.EntityDeleteException;
 import org.example.exception.EntityNotFoundException;
 import org.example.exception.EntitySaveException;
 import org.example.repository.batis.BatisStreetRepository;
-import org.example.service.StreetService;
 import org.example.utils.EntityCreatorUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,33 +1,29 @@
-package service;
+package org.example.service;
 
-import org.example.configs.SessionManager;
 import org.example.entity.Employee;
 import org.example.entity.Task;
-import org.example.enums.SessionName;
 import org.example.exception.EntityDeleteException;
 import org.example.exception.EntityNotFoundException;
 import org.example.exception.EntitySaveException;
-import org.example.repository.jdbc.JdbcEmployeeRepository;
-import org.example.service.EmployeeService;
-import org.example.utils.CreateDropTablesUtil;
+import org.example.repository.batis.BatisEmployeeRepository;
 import org.example.utils.EntityCreatorUtil;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("JDBC: Тестирование сервиса Employee")
-class JdbcEmployeeServiceTest {
+@DisplayName("MyBATIS: Тестирование сервиса Employee")
+class BatisEmployeeServiceTest {
 
     List<Employee> employees;
     List<Task> tasks;
 
     static EmployeeService service;
-    private static Connection connection;
 
     @BeforeEach
     void setUp() {
@@ -37,18 +33,8 @@ class JdbcEmployeeServiceTest {
 
     @BeforeAll
     static void setUpAll() {
-        JdbcEmployeeRepository employeeRepository = new JdbcEmployeeRepository();
+        BatisEmployeeRepository employeeRepository = new BatisEmployeeRepository();
         service = new EmployeeService(employeeRepository);
-        connection = (Connection) SessionManager.createSession(SessionName.JDBC.getSessionName());
-        CreateDropTablesUtil.createAllTables(connection);
-    }
-
-    @AfterAll
-    static void tearDownAll() throws SQLException {
-        if (connection != null) {
-            CreateDropTablesUtil.dropAllTables(connection);
-            connection.close();
-        }
     }
 
     @Test

@@ -1,31 +1,33 @@
-package service;
+package org.example.service;
 
+import org.example.configs.SessionManager;
 import org.example.entity.BrandCar;
 import org.example.entity.ModelCar;
+import org.example.enums.SessionName;
 import org.example.enums.TypeBody;
 import org.example.exception.EntityDeleteException;
 import org.example.exception.EntityNotFoundException;
 import org.example.exception.EntitySaveException;
-import org.example.repository.batis.BatisModelRepository;
-import org.example.service.ModelCarService;
+import org.example.repository.jdbc.JdbcModelRepository;
+import org.example.utils.CreateDropTablesUtil;
 import org.example.utils.EntityCreatorUtil;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("MyBATIS: Тестирование сервиса Task")
-class BatisModelCarServiceTest {
+@DisplayName("JDBC: Тестирование сервиса Task")
+class JdbcModelCarServiceTest {
 
     List<ModelCar> models;
     List<BrandCar> brands;
 
     static ModelCarService service;
+    private static Connection connection;
 
     @BeforeEach
     void setUp() {
@@ -35,8 +37,18 @@ class BatisModelCarServiceTest {
 
     @BeforeAll
     static void setUpAll() {
-        BatisModelRepository modelRepository = new BatisModelRepository();
+        JdbcModelRepository modelRepository = new JdbcModelRepository();
         service = new ModelCarService(modelRepository);
+        connection = (Connection) SessionManager.createSession(SessionName.JDBC.getSessionName());
+        CreateDropTablesUtil.createAllTables(connection);
+    }
+
+    @AfterAll
+    static void tearDownAll() throws SQLException {
+        if (connection != null) {
+            CreateDropTablesUtil.dropAllTables(connection);
+            connection.close();
+        }
     }
 
     @Test

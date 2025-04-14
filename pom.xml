@@ -58,7 +58,6 @@
             <version>9.2.0</version>
         </dependency>
 
-
         <!-- SLF4J API -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -79,7 +78,6 @@
             <version>1.5.18</version>
         </dependency>
 
-
         <!--        Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -87,7 +85,6 @@
             <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
-
 
         <!-- JUnit 5 -->
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
@@ -120,8 +117,5 @@
             <version>1.5.5</version>
         </dependency>
 
-
     </dependencies>
-
-
 </project>

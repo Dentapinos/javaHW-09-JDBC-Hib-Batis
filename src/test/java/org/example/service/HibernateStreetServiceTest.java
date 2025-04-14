@@ -1,53 +1,39 @@
-package service;
+package org.example.service;
 
-import org.example.configs.SessionManager;
 import org.example.entity.House;
 import org.example.entity.Street;
-import org.example.enums.SessionName;
 import org.example.exception.EntityDeleteException;
 import org.example.exception.EntityNotFoundException;
 import org.example.exception.EntitySaveException;
-import org.example.repository.jdbc.JdbcStreetRepository;
-import org.example.service.StreetService;
-import org.example.utils.CreateDropTablesUtil;
+import org.example.repository.hibernate.HibernateStreetRepository;
 import org.example.utils.EntityCreatorUtil;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("JDBC: Тестирование сервиса Street")
-class JdbcStreetServiceTest {
+@DisplayName("HIBERNATE: Тестирование сервиса Street")
+class HibernateStreetServiceTest {
 
     List<Street> streets;
     List<House> houses;
 
     static StreetService service;
-    private static Connection connection;
 
     @BeforeEach
     void setUp() {
         streets = EntityCreatorUtil.getStreets(6);
         houses = EntityCreatorUtil.getHouses(6);
-        connection = (Connection) SessionManager.createSession(SessionName.JDBC.getSessionName());
-        CreateDropTablesUtil.createAllTables(connection);
     }
 
     @BeforeAll
     static void setUpAll() {
-        JdbcStreetRepository streetRepository = new JdbcStreetRepository();
+        HibernateStreetRepository streetRepository = new HibernateStreetRepository();
         service = new StreetService(streetRepository);
-    }
-
-    @AfterAll
-    static void tearDownAll() throws SQLException {
-        if (connection != null) {
-            CreateDropTablesUtil.dropAllTables(connection);
-            connection.close();
-        }
     }
 
     @Test

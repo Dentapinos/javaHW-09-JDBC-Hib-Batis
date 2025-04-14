@@ -1,30 +1,32 @@
-package service;
+package org.example.service;
 
+import org.example.configs.SessionManager;
 import org.example.entity.Employee;
 import org.example.entity.Task;
+import org.example.enums.SessionName;
 import org.example.exception.EntityDeleteException;
 import org.example.exception.EntityNotFoundException;
 import org.example.exception.EntitySaveException;
-import org.example.repository.hibernate.HibernateEmployeeRepository;
-import org.example.service.EmployeeService;
+import org.example.repository.jdbc.JdbcEmployeeRepository;
+import org.example.utils.CreateDropTablesUtil;
 import org.example.utils.EntityCreatorUtil;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("HIBERNATE: Тестирование сервиса Employee")
-class HibernateEmployeeServiceTest {
+@DisplayName("JDBC: Тестирование сервиса Employee")
+class JdbcEmployeeServiceTest {
 
     List<Employee> employees;
     List<Task> tasks;
 
     static EmployeeService service;
+    private static Connection connection;
 
     @BeforeEach
     void setUp() {
@@ -34,8 +36,18 @@ class HibernateEmployeeServiceTest {
 
     @BeforeAll
     static void setUpAll() {
-        HibernateEmployeeRepository employeeRepository = new HibernateEmployeeRepository();
+        JdbcEmployeeRepository employeeRepository = new JdbcEmployeeRepository();
         service = new EmployeeService(employeeRepository);
+        connection = (Connection) SessionManager.createSession(SessionName.JDBC.getSessionName());
+        CreateDropTablesUtil.createAllTables(connection);
+    }
+
+    @AfterAll
+    static void tearDownAll() throws SQLException {
+        if (connection != null) {
+            CreateDropTablesUtil.dropAllTables(connection);
+            connection.close();
+        }
     }
 
     @Test

@@ -42,6 +42,55 @@ public List<T> getAll();<br>
 будет произведен запуск выполнения сохранения и получения 100 записей(количество можно указать в конструкторе).
 Так же для наглядности полученных данных я создал класс вывода в отдельном экране данных в виде графика.
 
+## Настройка конфигураций
+### Основные настройки
+[JDBCManager.java](src/main/java/org/example/configs/JDBCManager.java) в файле JDBCManager.java
+нужно указать:
+
+    String bdTableName = "test";
+    String bdLogin = "root";
+    String bdPassword = "password";
+
+bdTableName - имя схемы в MySql базе.<br>
+bdLogin - логин от базы MySql<br>
+bdPassword - пароль от базы MySql<br>
+
+
+[hibernate.cfg.xml](src/main/resources/hibernate.cfg.xml) настройка hibernate
+
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/test</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">password</property>
+
+Те же данные что и выше.<br>
+для отображения sql запросов можно раскоментировать следующие строки
+
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.format_sql">true</property>
+
+Для определения стратегии создания таблиц с помощью Hibernate можно изменять значение в следующей строке
+
+      <property name="hibernate.hbm2ddl.auto">update</property>
+
+на update, create-drop, create.
+
+[mybatis-config.xml](src/main/resources/mybatis-config.xml) настройка myBatis
+
+        <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/test"/>
+        <property name="username" value="root"/>
+        <property name="password" value="password"/>
+
+
+### Настройка тестов
+
+При тестировании я использовал базу h2, и отдельно для тестов создал файлы настроек
+которые так же по желанию можно изменить:
+
+[JDBCManager.java](src/test/java/configs/JDBCManager.java) настройка JDBC
+[hibernate.cfg.xml](src/test/resources/hibernate.cfg.xml) настройка hibernate
+[mybatis-config.xml](src/test/resources/mybatis-config.xml) настройка myBatis
+
 ## Описание
 <span style = "color:green">org/example/configs</span> Тут собраны менеджеры настроек подключения к базе данных<br>
 [HibernateManager.java](src/main/java/org/example/configs/HibernateManager.java) - настройки подключения к бд для Hibernate<br>

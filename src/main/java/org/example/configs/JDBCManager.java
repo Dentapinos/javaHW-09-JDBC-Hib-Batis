@@ -9,9 +9,9 @@ public class JDBCManager {
         //подтягивает драйвер внутрь приложения
         Class.forName("com.mysql.cj.jdbc.Driver");
         //создаем соединение с базой данных
-        String bdTableName = "tt"; //название таблицы в базе
+        String bdTableName = "test"; //название таблицы в базе
         String bdLogin = "root";    //логин
-        String bdPassword = "den27lad27";   //пароль
+        String bdPassword = "password";   //пароль
         String multipleStatement = "allowMultiQueries=true";
         String createDatabaseIfNotExist = "createDatabaseIfNotExist=true";  //создание базы данных если она не существует
         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + bdTableName + "?" + multipleStatement + "&user=" + bdLogin + "&password=" + bdPassword + "&" + createDatabaseIfNotExist);

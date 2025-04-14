@@ -1,4 +1,4 @@
-package service;
+package org.example.service;
 
 import org.example.configs.SessionManager;
 import org.example.entity.Kitty;
@@ -9,7 +9,6 @@ import org.example.exception.EntityDeleteException;
 import org.example.exception.EntityNotFoundException;
 import org.example.exception.EntitySaveException;
 import org.example.repository.jdbc.JdbcMasterRepository;
-import org.example.service.MasterService;
 import org.example.utils.CreateDropTablesUtil;
 import org.example.utils.EntityCreatorUtil;
 import org.junit.jupiter.api.*;

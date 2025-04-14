@@ -1,4 +1,4 @@
-package service;
+package org.example.service;
 
 import org.example.entity.Employee;
 import org.example.entity.Task;
@@ -6,8 +6,7 @@ import org.example.enums.TypeTask;
 import org.example.exception.EntityDeleteException;
 import org.example.exception.EntityNotFoundException;
 import org.example.exception.EntitySaveException;
-import org.example.repository.hibernate.HibernateTaskRepository;
-import org.example.service.TaskService;
+import org.example.repository.batis.BatisTaskRepository;
 import org.example.utils.EntityCreatorUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +18,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("HIBERNATE: Тестирование сервиса Task")
-class HibernateTaskServiceTest {
+@DisplayName("MyBATIS: Тестирование сервиса Task")
+class BatisTaskServiceTest {
 
     List<Task> tasks;
     List<Employee> employees;
@@ -35,8 +34,8 @@ class HibernateTaskServiceTest {
 
     @BeforeAll
     static void setUpAll() {
-        HibernateTaskRepository taskRepository = new HibernateTaskRepository();
-        service = new TaskService(taskRepository);
+        BatisTaskRepository batisTaskRepository = new BatisTaskRepository();
+        service = new TaskService(batisTaskRepository);
     }
 
     @Test

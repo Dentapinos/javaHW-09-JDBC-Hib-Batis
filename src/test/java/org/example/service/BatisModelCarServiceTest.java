@@ -1,4 +1,4 @@
-package service;
+package org.example.service;
 
 import org.example.entity.BrandCar;
 import org.example.entity.ModelCar;
@@ -6,8 +6,7 @@ import org.example.enums.TypeBody;
 import org.example.exception.EntityDeleteException;
 import org.example.exception.EntityNotFoundException;
 import org.example.exception.EntitySaveException;
-import org.example.repository.hibernate.HibernateModelCarRepository;
-import org.example.service.ModelCarService;
+import org.example.repository.batis.BatisModelRepository;
 import org.example.utils.EntityCreatorUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +18,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("HIBERNATE: Тестирование сервиса Task")
-class HibernateModelCarServiceTest {
+@DisplayName("MyBATIS: Тестирование сервиса Task")
+class BatisModelCarServiceTest {
 
     List<ModelCar> models;
     List<BrandCar> brands;
@@ -35,7 +34,7 @@ class HibernateModelCarServiceTest {
 
     @BeforeAll
     static void setUpAll() {
-        HibernateModelCarRepository modelRepository = new HibernateModelCarRepository();
+        BatisModelRepository modelRepository = new BatisModelRepository();
         service = new ModelCarService(modelRepository);
     }
 

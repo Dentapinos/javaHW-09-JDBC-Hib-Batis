@@ -1,12 +1,11 @@
-package service;
+package org.example.service;
 
 import org.example.entity.Employee;
 import org.example.entity.Task;
 import org.example.exception.EntityDeleteException;
 import org.example.exception.EntityNotFoundException;
 import org.example.exception.EntitySaveException;
-import org.example.repository.batis.BatisEmployeeRepository;
-import org.example.service.EmployeeService;
+import org.example.repository.hibernate.HibernateEmployeeRepository;
 import org.example.utils.EntityCreatorUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +17,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("MyBATIS: Тестирование сервиса Employee")
-class BatisEmployeeServiceTest {
+@DisplayName("HIBERNATE: Тестирование сервиса Employee")
+class HibernateEmployeeServiceTest {
 
     List<Employee> employees;
     List<Task> tasks;
@@ -34,7 +33,7 @@ class BatisEmployeeServiceTest {
 
     @BeforeAll
     static void setUpAll() {
-        BatisEmployeeRepository employeeRepository = new BatisEmployeeRepository();
+        HibernateEmployeeRepository employeeRepository = new HibernateEmployeeRepository();
         service = new EmployeeService(employeeRepository);
     }
 
