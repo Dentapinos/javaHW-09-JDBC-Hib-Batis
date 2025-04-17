@@ -94,8 +94,8 @@ bdPassword - пароль от базы MySql<br>
 ## Описание
 <span style = "color:green">org/example/configs</span> Тут собраны менеджеры настроек подключения к базе данных<br>
 [HibernateManager.java](src/main/java/org/example/configs/HibernateManager.java) - настройки подключения к бд для Hibernate<br>
-[JDBCManager.java](src/main/java/org/example/configs/JDBCManager.java) - настройки подключения к бд для Hibernate<br>
-[MyBatisConfig.java](src/main/java/org/example/configs/MyBatisConfig.java) - настройки подключения к бд для Hibernate<br>
+[JDBCManager.java](src/main/java/org/example/configs/JDBCManager.java) - настройки подключения к бд для JDBC<br>
+[MyBatisConfig.java](src/main/java/org/example/configs/MyBatisConfig.java) - настройки подключения к бд для MyBatis<br>
 [SessionManager.java](src/main/java/org/example/configs/SessionManager.java) - фабрика подключений<br>
 
 
